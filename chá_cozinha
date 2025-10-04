@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chá de Cozinha — Eric & Marta</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #fff5f6, #ffe4e1);
+      color: #444;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      padding: 40px 30px;
+      width: 90%;
+      max-width: 400px;
+      transition: 0.4s;
+      position: relative;
+    }
+
+    h1 {
+      color: #ff7b89;
+      margin-bottom: 10px;
+      font-size: 1.8em;
+    }
+
+    p {
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #ff7b89;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff4f63;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .success {
+      color: #2e7d32;
+      font-size: 1.3em;
+      margin-bottom: 10px;
+    }
+
+    .heart {
+      font-size: 1.5em;
+      color: #ff7b89;
+    }
+
+    /* Assinatura no canto inferior direito */
+    .assinatura {
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      font-size: 0.9em;
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <!-- TELA INICIAL -->
+  <div class="container" id="inicio">
+    <h1>💐 Chá de Cozinha 💐</h1>
+    <p>Eric & Marta</p>
+    <p>Escolha um presente e participe desse momento especial com a gente 💕</p>
+    <button onclick="abrirEscolha()">Escolher presente 🎁</button>
+  </div>
+
+  <!-- ESCOLHA DE PRESENTE -->
+  <div class="container hidden" id="escolha">
+    <h2>Escolha seu presente 🎁</h2>
+    <select id="presente">
+      <option value="">-- Selecione um item --</option>
+      <option>Conjunto de panelas</option>
+      <option>Jogo de copos</option>
+      <option>Toalhas de banho</option>
+      <option>Jogo de lençóis</option>
+      <option>Liquidificador</option>
+      <option>Pratos e talheres</option>
+      <option>Batedeira</option>
+      <option>Conjunto de potes</option>
+      <option>Panela elétrica</option>
+      <option>Conjunto de xícaras</option>
+    </select>
+    <input type="text" id="nome" placeholder="Digite seu nome">
+    <button onclick="confirmar()">Confirmar presente 💝</button>
+  </div>
+
+  <!-- TELA DE CONCLUSÃO -->
+  <div class="container hidden" id="concluido">
+    <div class="heart">💖</div>
+    <h2 class="success">Presente Confirmado!</h2>
+    <p>Obrigado por participar desse momento especial conosco.</p>
+    <p>Com carinho,<br><b>Eric & Marta</b></p>
+    <button onclick="voltarInicio()">Voltar à tela inicial</button>
+
+    <!-- Assinatura no canto -->
+    <div class="assinatura">Feito por Eric & Marta 💍</div>
+  </div>
+
+  <script>
+    function abrirEscolha() {
+      document.getElementById("inicio").classList.add("hidden");
+      document.getElementById("escolha").classList.remove("hidden");
+    }
+
+    function confirmar() {
+      const nome = document.getElementById("nome").value.trim();
+      const presente = document.getElementById("presente").value;
+
+      if (!nome || !presente) {
+        alert("Por favor, preencha seu nome e escolha um presente.");
+        return;
+      }
+
+      const listaSalva = JSON.parse(localStorage.getItem("presentes") || "{}");
+      if (listaSalva[presente]) {
+        alert("Este presente já foi escolhido por outra pessoa. Escolha outro item.");
+        return;
+      }
+
+      listaSalva[presente] = nome;
+      localStorage.setItem("presentes", JSON.stringify(listaSalva));
+
+      document.getElementById("escolha").classList.add("hidden");
+      document.getElementById("concluido").classList.remove("hidden");
+    }
+
+    function voltarInicio() {
+      document.getElementById("concluido").classList.add("hidden");
+      document.getElementById("inicio").classList.remove("hidden");
+      document.getElementById("nome").value = "";
+      document.getElementById("presente").value = "";
+    }
+  </script>
+</body>
+</html>
